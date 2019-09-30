@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"encoding/csv"
 	"fmt"
 	"io"
@@ -44,22 +43,34 @@ func main() {
 
 	startGame()
 
+	choice := ""
+	fmt.Println("\nWant to Restart? ")
+	fmt.Scanln(&choice)
+
+	if choice == "Y" || choice == "y" {
+		startGame()
+	} else if choice == "N" || choice == "n" {
+		os.Exit(0)
+	} else {
+		fmt.Println("\nWrong Choice. Exiting...")
+		os.Exit(1)
+	}
+
 }
 
 func startGame() {
 	score = 0
+	givenAnswer := ""
 	for i := 0; i < len(Questions); i++ {
 		currentQuestion = Questions[i]
 		currentAnswer = Answers[i]
+		givenAnswer = ""
+		fmt.Printf("\nQuestion %d: %s \n", i+1, currentQuestion)
+		fmt.Scanln(&givenAnswer)
 
-		fmt.Printf("\nQuestion %d: %s \n", i, currentQuestion)
-		reader := bufio.NewReader(os.Stdin)
-		answer, _ := reader.ReadString('\n')
-		fmt.Printf("%T, %T", answer, currentAnswer)
-		if answer == currentAnswer {
+		if givenAnswer == currentAnswer {
 			score++
 		}
-
 	}
 	fmt.Printf("\nYour Score: %d", score)
 }
